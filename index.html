@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <!-- Basic Page Needs–– -->
   <meta charset="utf-8">
   <title>visualisation of traffic</title>
@@ -21,10 +20,11 @@
   <link rel="stylesheet" href="css/customize.css">
   <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
   <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
-  #map_1,#map_2,#map_3 {
-    height: 500px;
-  }
+    #map_1,#map_2,#map_3 {
+      height: 500px;
+    }
   </style>
 
   <!-- D3 -->
@@ -32,7 +32,6 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="images/favicon.png">
-
 </head>
 <body>
 
@@ -62,13 +61,13 @@
     <div class="twelve columns">
       <h3>Example 1: Simple Map</h3>
       <h5>
-        This example shows how to create a map using Leaflet.js and MapBox.js, and center the map at a specified pair of lat/long coordinates.
+        This example shows how to create a map using Leaflet.js and MapBox.js, and center the map at a specified pair of lat/long coordinates.<br>
+        <span style="color:blue;">Now displays major roads in Athens via OpenStreetMap (Overpass API)</span>
       </h5>
     </div>
   </div>
 
   <div id="map_1" class="one-bottom"></div>
-
 
   <div class="container one-bottom" >
     <div class="twelve columns">
@@ -81,7 +80,6 @@
 
   <div id="map_2" class="one-bottom"></div>
 
-
   <div class="container one-bottom" >
     <div class="twelve columns">
       <h3>Example 3: Map with locations of stations with sizes proportional to their accumulation levels</h3>
@@ -91,9 +89,7 @@
     </div>
   </div>
 
-
   <div id="map_3" class="one-bottom"></div>
-
 
   <div class="container one-bottom" >
     <h3>Below is an array of images organized into rows and collumns</h3>
@@ -131,70 +127,104 @@
     <h5>Student C contributed to this, this, and that.</h5>
   </div>
 
-
-
+  <!-- Add Leaflet.js for Overpass API -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-
   L.mapbox.accessToken = 'pk.eyJ1IjoiZGltcCIsImEiOiJkRnlra3RjIn0.E9CTYzNUEx0yb3dcfV4SiA';
 
-  var map_1 = L.mapbox.map('map_1')
-  .setView([37.983810, 23.727539], 13)
-  .addLayer(L.mapbox.styleLayer('mapbox://styles/dimp/citf6n01300692hmlxnnrv6wd'));
-  map_1
-  .scrollWheelZoom.disable();
+  // --- Example 1: Map with Major Roads in Athens using Overpass API ---
+  var map_1 = L.map('map_1').setView([37.983810, 23.727539], 13);
+  // Use OpenStreetMap tile layer for base
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map_1);
 
+  // Overpass QL query for only major roads in Athens
+  var query = `
+    [out:json][timeout:25];
+    (
+      way["highway"~"motorway|trunk|primary|secondary|tertiary"](37.9,23.6,38.05,23.9);
+    );
+    out body;
+    >;
+    out skel qt;
+  `;
+  var url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      var nodes = {};
+      data.elements.forEach(function(el) {
+        if (el.type === "node") {
+          nodes[el.id] = [el.lat, el.lon];
+        }
+      });
+      data.elements.forEach(function(el) {
+        if (el.type === "way" && el.nodes) {
+          var latlngs = el.nodes.map(function(nodeId) {
+            return nodes[nodeId];
+          }).filter(Boolean);
+          if (latlngs.length > 1) {
+            L.polyline(latlngs, {
+              color: "blue",
+              weight: 2,
+              opacity: 0.7
+            }).addTo(map_1);
+          }
+        }
+      });
+    })
+    .catch(err => {
+      alert('Failed to load Overpass road data.');
+      console.error(err);
+    });
+
+  // --- Example 2 and 3: MapBox.js and D3.js for stations ---
 
   d3.json("https://api.citybik.es/v2/networks/ford-gobike", function(data) {
-    console.log(data);
-
+    // Map 2: Plot stations as small circles
     var map_2 = L.mapbox.map('map_2')
-    .setView([37.983810, 23.727539], 13)
-    .addLayer(L.mapbox.styleLayer('mapbox://styles/dimp/citf6n01300692hmlxnnrv6wd'));
-    map_2
-    .scrollWheelZoom.disable();
+      .setView([37.983810, 23.727539], 13)
+      .addLayer(L.mapbox.styleLayer('mapbox://styles/dimp/citf6n01300692hmlxnnrv6wd'));
+    map_2.scrollWheelZoom.disable();
 
-    data.network.stations.forEach(function(station){
+    data.network.stations.forEach(function(station) {
       station.lat = +station.latitude;
       station.lng = +station.longitude;
       var path_options = {
-        radius :  2,
-        color : d3.rgb(88,206,227).brighter(),
+        radius: 2,
+        color: d3.rgb(88, 206, 227).brighter(),
         stroke: true,
-        weight : 1,
+        weight: 1,
       };
       L.circleMarker([station.latitude, station.longitude], path_options).addTo(map_2);
     });
 
+    // Map 3: Plot stations with size proportional to inventory
     var map_3 = L.mapbox.map('map_3')
-    .setView([37.983810, 23.727539], 11)
-    .addLayer(L.mapbox.styleLayer('mapbox://styles/dimp/ck9mf0x8q3o521iojo2qmmp52'));
-    map_3
-    .scrollWheelZoom.disable();
+      .setView([37.983810, 23.727539], 11)
+      .addLayer(L.mapbox.styleLayer('mapbox://styles/dimp/ck9mf0x8q3o521iojo2qmmp52'));
+    map_3.scrollWheelZoom.disable();
 
-    data.network.stations.forEach(function(station){
+    data.network.stations.forEach(function(station) {
       station.lat = +station.latitude;
       station.lng = +station.longitude;
-      var inventory_level = station.free_bikes / (station.free_bikes+station.empty_slots);
+      var inventory_level = station.free_bikes / (station.free_bikes + station.empty_slots);
       var path_options = {
-        radius :  0.14 * (station.free_bikes + station.empty_slots),
-        color : d3.rgb(88,206,227).brighter(),
-        fillColor : (function(){
-          return inventory_level > 0.5? d3.rgb(88,206,227) : d3.rgb(88,206,227).darker(2)
+        radius: 0.14 * (station.free_bikes + station.empty_slots),
+        color: d3.rgb(88, 206, 227).brighter(),
+        fillColor: (function() {
+          return inventory_level > 0.5 ? d3.rgb(88, 206, 227) : d3.rgb(88, 206, 227).darker(2)
         })(),
         stroke: true,
-        weight : 1,
-        opacity : 1,
-        fillOpacity : 0.8
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
       };
       L.circleMarker([station.latitude, station.longitude], path_options).addTo(map_3);
     });
   });
-
-
-
-
   </script>
-
-
 </body>
 </html>
