@@ -1,36 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Basic Page Needs–– -->
   <meta charset="utf-8">
   <title>visualisation of traffic</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <!-- Mobile Specific Metas -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- FONT -->
   <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/skeleton.css">
   <link rel="stylesheet" href="css/customize.css">
+
+  <!-- Mapbox v3.3.1 (for map_2 and map_3) -->
   <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
   <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+
+  <!-- Leaflet (for map_1/Overpass/OSM) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
   <style>
-    #map_1,#map_2,#map_3 {
-      height: 500px;
-    }
+    #map_1, #map_2, #map_3 { height: 500px; }
   </style>
 
   <!-- D3 -->
   <script src="https://d3js.org/d3.v4.min.js"></script>
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="images/favicon.png">
 </head>
 <body>
@@ -49,7 +46,6 @@
     </div>
   </div>
 
-
   <div class="container one-bottom" style="margin-top: 50px">
     <div class="twelve columns">
       <h3>Making an interactive map and plotting data on it</h3>
@@ -57,7 +53,7 @@
     </div>
   </div>
 
-  <div class="container one-bottom" >
+  <div class="container one-bottom">
     <div class="twelve columns">
       <h3>Example 1: Simple Map</h3>
       <h5>
@@ -69,7 +65,7 @@
 
   <div id="map_1" class="one-bottom"></div>
 
-  <div class="container one-bottom" >
+  <div class="container one-bottom">
     <div class="twelve columns">
       <h3>Example 2: Map with displayed locations of stations from a dataset</h3>
       <h5>
@@ -77,10 +73,9 @@
       </h5>
     </div>
   </div>
-
   <div id="map_2" class="one-bottom"></div>
 
-  <div class="container one-bottom" >
+  <div class="container one-bottom">
     <div class="twelve columns">
       <h3>Example 3: Map with locations of stations with sizes proportional to their accumulation levels</h3>
       <h5>
@@ -88,14 +83,12 @@
       </h5>
     </div>
   </div>
-
   <div id="map_3" class="one-bottom"></div>
 
-  <div class="container one-bottom" >
-    <h3>Below is an array of images organized into rows and collumns</h3>
+  <div class="container one-bottom">
+    <h3>Below is an array of images organized into rows and columns</h3>
   </div>
-
-  <div class="container one-bottom" >
+  <div class="container one-bottom">
     <div class="row">
       <img class="four columns scale-with-grid quarter-bottom-rel" src="img/img_640/640x480.jpg">
       <img class="four columns scale-with-grid quarter-bottom-rel" src="img/img_640/640x480.jpg">
@@ -108,7 +101,7 @@
     </div>
   </div>
 
-  <div class="container one-bottom" >
+  <div class="container one-bottom">
     <h2>This is Heading 2</h2>
     <h3>This is Heading 3</h3>
     <h4>This is Heading 4</h4>
@@ -116,7 +109,7 @@
     <p>This is paragraph text p</p>
   </div>
 
-  <div class="container one-bottom" >
+  <div class="container one-bottom">
     <h2>Team & Contributions</h2>
     <h5>Be very clear about how each student in your team contributed to this project</h5>
     <h3>Student A</h3>
@@ -127,11 +120,7 @@
     <h5>Student C contributed to this, this, and that.</h5>
   </div>
 
-  <!-- Add Leaflet.js for Overpass API -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-  L.mapbox.accessToken = 'pk.eyJ1IjoiZGltcCIsImEiOiJkRnlra3RjIn0.E9CTYzNUEx0yb3dcfV4SiA';
-
   // --- Example 1: Map with Major Roads in Athens using Overpass API ---
   var map_1 = L.map('map_1').setView([37.983810, 23.727539], 13);
   // Use OpenStreetMap tile layer for base
@@ -181,6 +170,7 @@
     });
 
   // --- Example 2 and 3: MapBox.js and D3.js for stations ---
+  L.mapbox.accessToken = 'pk.eyJ1IjoiZGltcCIsImEiOiJkRnlra3RjIn0.E9CTYzNUEx0yb3dcfV4SiA';
 
   d3.json("https://api.citybik.es/v2/networks/ford-gobike", function(data) {
     // Map 2: Plot stations as small circles
