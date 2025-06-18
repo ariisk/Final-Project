@@ -39,7 +39,7 @@
   <div class="container one-bottom"><div class="twelve columns">
     <h3>Example 1: Simple Map</h3>
     <h5>This example shows how to create a map using MapBox.js, and center the map at a specified pair of lat/long coordinates.<br>
-      <span style="color:blue;">Now displays major roads in Athens via OpenStreetMap (Overpass API)</span>
+      <span style="color:blue;">Now displays major roads in Athens via OpenStreetMap (Overpass API) and a custom MapBox style!</span>
     </h5>
   </div></div>
   <div id="map_1" class="one-bottom"></div>
@@ -95,52 +95,51 @@
   // Set your Mapbox token here
   L.mapbox.accessToken = 'pk.eyJ1IjoiZGltcCIsImEiOiJkRnlra3RjIn0.E9CTYzNUEx0yb3dcfV4SiA';
 
-  // --- Example 1: Map with Major Roads in Athens using Overpass API ---
-  <!-- Only the map_1 part is shown for brevity -->
-<div id="map_1" style="height:500px;"></div>
-<script src="https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js"></script>
-<link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
-<script>
-L.mapbox.accessToken = 'YOUR_TOKEN_HERE';
+  // --- Example 1: Custom MapBox style + Major Roads in Athens using Overpass API ---
+  var map_1 = L.mapbox.map('map_1')
+    .setView([37.983810, 23.727539], 13)
+    // Replace with your own custom style if you wish!
+    .addLayer(L.mapbox.styleLayer('mapbox://styles/dimp/citf6n01300692hmlxnnrv6wd'));
 
-var map_1 = L.mapbox.map('map_1')
-  .setView([37.983810, 23.727539], 13)
-  .addLayer(L.mapbox.styleLayer('mapbox://styles/dimp/citf6n01300692hmlxnnrv6wd'));
+  // Overpass QL query for major roads in Athens
+  var query = `
+    [out:json][timeout:25];
+    (
+      way["highway"~"motorway|trunk|primary|secondary|tertiary"](37.9,23.6,38.05,23.9);
+    );
+    out body;
+    >;
+    out skel qt;
+  `;
+  var url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
 
-// Overpass query for major Athens roads
-var query = `
-  [out:json][timeout:25];
-  (
-    way["highway"~"motorway|trunk|primary|secondary|tertiary"](37.9,23.6,38.05,23.9);
-  );
-  out body;
-  >;
-  out skel qt;
-`;
-var url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
-
-fetch(url)
-  .then(response => response.json())
-  .then(data => {
-    var nodes = {};
-    data.elements.forEach(function(el) {
-      if (el.type === "node") {
-        nodes[el.id] = [el.lat, el.lon];
-      }
-    });
-    data.elements.forEach(function(el) {
-      if (el.type === "way" && el.nodes) {
-        var latlngs = el.nodes.map(function(nodeId) {
-          return nodes[nodeId];
-        }).filter(Boolean);
-        if (latlngs.length > 1) {
-          L.polyline(latlngs, {
-            color: "blue",
-            weight: 2,
-            opacity: 0.7
-          }).addTo(map_1);
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      var nodes = {};
+      data.elements.forEach(function(el) {
+        if (el.type === "node") {
+          nodes[el.id] = [el.lat, el.lon];
         }
-      }
+      });
+      data.elements.forEach(function(el) {
+        if (el.type === "way" && el.nodes) {
+          var latlngs = el.nodes.map(function(nodeId) {
+            return nodes[nodeId];
+          }).filter(Boolean);
+          if (latlngs.length > 1) {
+            L.polyline(latlngs, {
+              color: "blue",
+              weight: 2,
+              opacity: 0.7
+            }).addTo(map_1);
+          }
+        }
+      });
+    })
+    .catch(err => {
+      alert('Failed to load Overpass road data.');
+      console.error(err);
     });
 
   // --- Example 2 and 3: MapBox.js and D3.js for stations ---
