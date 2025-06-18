@@ -12,14 +12,14 @@
   <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
   <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
   <style>
-    #map_1 { height: 500px; }
+    #map_1 { height: 600px; }
   </style>
   <link rel="icon" type="image/png" href="images/favicon.png">
 </head>
 <body>
   <div class="container one-bottom" style="margin-top: 50px">
     <div class="ten columns">
-      <h2>Mobility on Demand Systems: Data-Driven Analysis, Simulation, Visualization</h2>
+      <h2>Final Assignment visualiting the movement of life through densites and timestomps of trafic </h2>
       <p>ARCH 6306/6050, DSBA 6010, ITIS 8010/6010: Wednesdays 6pm-8:30pm, Taught Online<br>
       Dr. Dimitris Papanikolaou | dpapanik@uncc.edu | Urban Synergetics Lab | https://urbansynergeticslab.net</p>
     </div>
@@ -30,7 +30,7 @@
 
   <div class="container one-bottom" style="margin-top: 50px">
     <div class="twelve columns">
-      <h3>Making an interactive map and plotting data on it</h3>
+      <h3>Conecting a map with visualised information</h3>
       <h5>This example uses <a href="https://docs.mapbox.com/mapbox.js/api/v3.3.1/">MapBox.js v3.3.1</a> and <a href="http://getskeleton.com/">Skeleton</a> boilerplate </h5>
     </div>
   </div>
@@ -39,7 +39,7 @@
     <div class="twelve columns">
       <h3>Example: Custom Map with Major Roads</h3>
       <h5>
-        This example shows a MapBox.js map using a custom style and overlays major roads in Athens, via Overpass API.
+        This example shows a MapBox.js map using a custom style and an overlay of major roads in Athens, via Overpass API.
       </h5>
     </div>
   </div>
@@ -60,24 +60,13 @@
       <img class="four columns scale-with-grid quarter-bottom-rel" src="img/img_640/640x480.jpg">
     </div>
   </div>
-
+  
   <div class="container one-bottom">
-    <h2>This is Heading 2</h2>
-    <h3>This is Heading 3</h3>
-    <h4>This is Heading 4</h4>
-    <h5>This is Heading 5</h5>
-    <p>This is paragraph text p</p>
-  </div>
-
-  <div class="container one-bottom">
-    <h2>Team & Contributions</h2>
-    <h5>Be very clear about how each student in your team contributed to this project</h5>
-    <h3>Student A</h3>
+    <h2>Team 48</h2>
+    <h3>Άρης Κατσαράκης</h3>
     <h5>Student A contributed to this, this, and that.</h5>
-    <h3>Student B</h3>
+    <h3>Θεμιστοκλής Τσούβαλης</h3>
     <h5>Student B contributed to this, this, and that.</h5>
-    <h3>Student C</h3>
-    <h5>Student C contributed to this, this, and that.</h5>
   </div>
 
   <script>
@@ -118,7 +107,7 @@
           }).filter(Boolean);
           if (latlngs.length > 1) {
             L.polyline(latlngs, {
-              color: "white",
+              color: "red",
               weight: 2,
               opacity: 0.7
             }).addTo(map_1);
