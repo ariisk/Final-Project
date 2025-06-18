@@ -137,16 +137,6 @@
 
   L.mapbox.accessToken = 'pk.eyJ1IjoiZGltcCIsImEiOiJkRnlra3RjIn0.E9CTYzNUEx0yb3dcfV4SiA';
 
-  var map_1 = L.mapbox.map('map_1')
-  .setView([37.983810, 23.727539], 13)
-  .addLayer(L.mapbox.styleLayer('mapbox://styles/dimp/citf6n01300692hmlxnnrv6wd'));
-  map_1
-  .scrollWheelZoom.disable();
-
-
-  d3.json("https://api.citybik.es/v2/networks/ford-gobike", function(data) {
-    console.log(data);
-
     var map_2 = L.mapbox.map('map_2')
     .setView([37.983810, 23.727539], 13)
     .addLayer(L.mapbox.styleLayer('mapbox://styles/dimp/citf6n01300692hmlxnnrv6wd'));
@@ -163,30 +153,6 @@
         weight : 1,
       };
       L.circleMarker([station.latitude, station.longitude], path_options).addTo(map_2);
-    });
-
-    var map_3 = L.mapbox.map('map_3')
-    .setView([37.983810, 23.727539], 11)
-    .addLayer(L.mapbox.styleLayer('mapbox://styles/dimp/ck9mf0x8q3o521iojo2qmmp52'));
-    map_3
-    .scrollWheelZoom.disable();
-
-    data.network.stations.forEach(function(station){
-      station.lat = +station.latitude;
-      station.lng = +station.longitude;
-      var inventory_level = station.free_bikes / (station.free_bikes+station.empty_slots);
-      var path_options = {
-        radius :  0.14 * (station.free_bikes + station.empty_slots),
-        color : d3.rgb(88,206,227).brighter(),
-        fillColor : (function(){
-          return inventory_level > 0.5? d3.rgb(88,206,227) : d3.rgb(88,206,227).darker(2)
-        })(),
-        stroke: true,
-        weight : 1,
-        opacity : 1,
-        fillOpacity : 0.8
-      };
-      L.circleMarker([station.latitude, station.longitude], path_options).addTo(map_3);
     });
   });
 
