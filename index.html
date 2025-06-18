@@ -78,7 +78,7 @@
     .setView([37.983810, 23.727539], 13)
     // Replace with your own custom style if you wish!
     .addLayer(L.mapbox.styleLayer('mapbox://styles/dimp/citf6n01300692hmlxnnrv6wd'));
-
+map_1.scrollWheelZoom.disable();
   // Overpass QL query for major roads in Athens
   var query = `
     [out:json][timeout:25];
