@@ -3,43 +3,26 @@
 <head>
   <meta charset="utf-8">
   <title>visualisation of traffic</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/skeleton.css">
   <link rel="stylesheet" href="css/customize.css">
-
-  <!-- Mapbox v3.3.1 (for map_2 and map_3) -->
   <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
   <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
-
-  <!-- Leaflet (for map_1/Overpass/OSM) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
   <style>
     #map_1, #map_2, #map_3 { height: 500px; }
   </style>
-
-  <!-- D3 -->
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <link rel="icon" type="image/png" href="images/favicon.png">
 </head>
 <body>
-
   <div class="container one-bottom" style="margin-top: 50px">
     <div class="ten columns">
       <h2>Mobility on Demand Systems: Data-Driven Analysis, Simulation, Visualization</h2>
-      <p>
-        ARCH 6306/6050, DSBA 6010, ITIS 8010/6010: Wednesdays 6pm-8:30pm, Taught Online
-        <br>
-        Dr. Dimitris Papanikolaou | dpapanik@uncc.edu | Urban Synergetics Lab | https://urbansynergeticslab.net
-      </p>
+      <p>ARCH 6306/6050, DSBA 6010, ITIS 8010/6010: Wednesdays 6pm-8:30pm, Taught Online<br>
+      Dr. Dimitris Papanikolaou | dpapanik@uncc.edu | Urban Synergetics Lab | https://urbansynergeticslab.net</p>
     </div>
     <div class="two columns">
       <a href="https://urbansynergeticslab.net/"><img class="scale-with-grid" src="img/LabLogo_dark_cropped.png"></a>
@@ -53,36 +36,24 @@
     </div>
   </div>
 
-  <div class="container one-bottom">
-    <div class="twelve columns">
-      <h3>Example 1: Simple Map</h3>
-      <h5>
-        This example shows how to create a map using Leaflet.js and MapBox.js, and center the map at a specified pair of lat/long coordinates.<br>
-        <span style="color:blue;">Now displays major roads in Athens via OpenStreetMap (Overpass API)</span>
-      </h5>
-    </div>
-  </div>
-
+  <div class="container one-bottom"><div class="twelve columns">
+    <h3>Example 1: Simple Map</h3>
+    <h5>This example shows how to create a map using MapBox.js, and center the map at a specified pair of lat/long coordinates.<br>
+      <span style="color:blue;">Now displays major roads in Athens via OpenStreetMap (Overpass API)</span>
+    </h5>
+  </div></div>
   <div id="map_1" class="one-bottom"></div>
 
-  <div class="container one-bottom">
-    <div class="twelve columns">
-      <h3>Example 2: Map with displayed locations of stations from a dataset</h3>
-      <h5>
-        This example shows how to create a map using Leaflet.js/MapBox.js, and then plot a set of circles at the locations of the stations.
-      </h5>
-    </div>
-  </div>
+  <div class="container one-bottom"><div class="twelve columns">
+    <h3>Example 2: Map with displayed locations of stations from a dataset</h3>
+    <h5>This example shows how to create a map using MapBox.js, and then plot a set of circles at the locations of the stations.</h5>
+  </div></div>
   <div id="map_2" class="one-bottom"></div>
 
-  <div class="container one-bottom">
-    <div class="twelve columns">
-      <h3>Example 3: Map with locations of stations with sizes proportional to their accumulation levels</h3>
-      <h5>
-        This example shows how to create a map using Leaflet.js/MapBox.js, plot a set of circles at the locations of the stations, and adjusts their diameters to be proportional to the inventory levels of the stations.
-      </h5>
-    </div>
-  </div>
+  <div class="container one-bottom"><div class="twelve columns">
+    <h3>Example 3: Map with locations of stations with sizes proportional to their accumulation levels</h3>
+    <h5>This example shows how to create a map using MapBox.js, plot a set of circles at the locations of the stations, and adjusts their diameters to be proportional to the inventory levels of the stations.</h5>
+  </div></div>
   <div id="map_3" class="one-bottom"></div>
 
   <div class="container one-bottom">
@@ -121,14 +92,15 @@
   </div>
 
   <script>
-  // --- Example 1: Map with Major Roads in Athens using Overpass API ---
-  var map_1 = L.map('map_1').setView([37.983810, 23.727539], 13);
-  // Use OpenStreetMap tile layer for base
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map_1);
+  // Set your Mapbox token here
+  L.mapbox.accessToken = 'pk.eyJ1IjoiZGltcCIsImEiOiJkRnlra3RjIn0.E9CTYzNUEx0yb3dcfV4SiA';
 
-  // Overpass QL query for only major roads in Athens
+  // --- Example 1: Map with Major Roads in Athens using Overpass API ---
+  var map_1 = L.mapbox.map('map_1')
+    .setView([37.983810, 23.727539], 13)
+    .addLayer(L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v11'));
+
+  // Overpass QL query for major roads in Athens
   var query = `
     [out:json][timeout:25];
     (
@@ -170,8 +142,6 @@
     });
 
   // --- Example 2 and 3: MapBox.js and D3.js for stations ---
-  L.mapbox.accessToken = 'pk.eyJ1IjoiZGltcCIsImEiOiJkRnlra3RjIn0.E9CTYzNUEx0yb3dcfV4SiA';
-
   d3.json("https://api.citybik.es/v2/networks/ford-gobike", function(data) {
     // Map 2: Plot stations as small circles
     var map_2 = L.mapbox.map('map_2')
