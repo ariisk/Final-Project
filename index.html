@@ -12,9 +12,8 @@
   <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
   <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
   <style>
-    #map_1,  { height: 500px; }
+    #map_1 { height: 500px; }
   </style>
-  <script src="https://d3js.org/d3.v4.min.js"></script>
   <link rel="icon" type="image/png" href="images/favicon.png">
 </head>
 <body>
@@ -32,29 +31,19 @@
   <div class="container one-bottom" style="margin-top: 50px">
     <div class="twelve columns">
       <h3>Making an interactive map and plotting data on it</h3>
-      <h5>Use this template for your assignments in the class. This example uses <a href="https://docs.mapbox.com/mapbox.js/api/v3.3.1/">MapBox.js v3.3.1</a> and <a href="http://getskeleton.com/">Skeleton</a> boilerplate </h5>
+      <h5>This example uses <a href="https://docs.mapbox.com/mapbox.js/api/v3.3.1/">MapBox.js v3.3.1</a> and <a href="http://getskeleton.com/">Skeleton</a> boilerplate </h5>
     </div>
   </div>
 
-  <div class="container one-bottom"><div class="twelve columns">
-    <h3>Example 1: Simple Map</h3>
-    <h5>This example shows how to create a map using MapBox.js, and center the map at a specified pair of lat/long coordinates.<br>
-      <span style="color:blue;">Now displays major roads in Athens via OpenStreetMap (Overpass API) and a custom MapBox style!</span>
-    </h5>
-  </div></div>
+  <div class="container one-bottom">
+    <div class="twelve columns">
+      <h3>Example: Custom Map with Major Roads</h3>
+      <h5>
+        This example shows a MapBox.js map using a custom style and overlays major roads in Athens, via Overpass API.
+      </h5>
+    </div>
+  </div>
   <div id="map_1" class="one-bottom"></div>
-
-  <div class="container one-bottom"><div class="twelve columns">
-    <h3>Example 2: Map with displayed locations of stations from a dataset</h3>
-    <h5>This example shows how to create a map using MapBox.js, and then plot a set of circles at the locations of the stations.</h5>
-  </div></div>
-  <div id="map_2" class="one-bottom"></div>
-
-  <div class="container one-bottom"><div class="twelve columns">
-    <h3>Example 3: Map with locations of stations with sizes proportional to their accumulation levels</h3>
-    <h5>This example shows how to create a map using MapBox.js, plot a set of circles at the locations of the stations, and adjusts their diameters to be proportional to the inventory levels of the stations.</h5>
-  </div></div>
-  <div id="map_3" class="one-bottom"></div>
 
   <div class="container one-bottom">
     <h3>Below is an array of images organized into rows and columns</h3>
@@ -95,7 +84,7 @@
   // Set your Mapbox token here
   L.mapbox.accessToken = 'pk.eyJ1IjoiZGltcCIsImEiOiJkRnlra3RjIn0.E9CTYzNUEx0yb3dcfV4SiA';
 
-  // --- Example 1: Custom MapBox style + Major Roads in Athens using Overpass API ---
+  // Map with custom style + Major Roads in Athens using Overpass API
   var map_1 = L.mapbox.map('map_1')
     .setView([37.983810, 23.727539], 13)
     // Replace with your own custom style if you wish!
@@ -141,7 +130,6 @@
       alert('Failed to load Overpass road data.');
       console.error(err);
     });
-  });
   </script>
 </body>
 </html>
