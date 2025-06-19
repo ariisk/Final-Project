@@ -50,18 +50,44 @@
   <div class="container one-bottom">
     <h3>Below is an array of images/links about our journey and process about creating our p5 data visalisasion map</h3>
   </div>
-  <div class="container one-bottom">
-    <div class="row">
-       <a href="https://editor.p5js.org/ThemTsouvalis/sketches/OEa_grg8i"><img class="four columns scale-with-grid quarter-bottom-rel" src="img/Στιγμιότυπο οθόνης (5).png"></a>
-       <a href="https://editor.p5js.org/gr8aris2/sketches/qk2jSKi20"><img class="four columns scale-with-grid quarter-bottom-rel" src="img/Στιγμιότυπο οθόνης 2025-06-19 131736.png"></a>
-       <a href="https://editor.p5js.org/gr8aris2/sketches/fYBGyNppX"><img class="four columns scale-with-grid quarter-bottom-rel" src="img/Στιγμιότυπο οθόνης 2025-06-19 125856.png"></a>
+<style>
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 20px; /* space between columns and rows */
+  text-align: center; /* center text under images */
+  margin-top: 24px;
+}
+.image-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 8px;
+}
+</style>
+
+<div class="container one-bottom">
+  <div class="image-grid">
+    <div class="image-item">
+      <a href="https://editor.p5js.org/ThemTsouvalis/sketches/OEa_grg8i">
+        <img src="img/Στιγμιότυπο οθόνης (5).png" alt="Screenshot 1">
+      </a>
+      <h4>test test 1</h4>
     </div>
-    <div class="row">
-      <a> <h4> test test </h4> <line class="four columns scale-with-grid quarter-bottom-rel"> </a>
-      <a> <h4> test test </h4> <line class="four columns scale-with-grid quarter-bottom-rel"> </a>
-      <a> <h4> test test </h4> <line class="four columns scale-with-grid quarter-bottom-rel"> </a>
+    <div class="image-item">
+      <a href="https://editor.p5js.org/gr8aris2/sketches/qk2jSKi20">
+        <img src="img/Στιγμιότυπο οθόνης 2025-06-19 131736.png" alt="Screenshot 2">
+      </a>
+      <h4>test test 2</h4>
+    </div>
+    <div class="image-item">
+      <a href="https://editor.p5js.org/gr8aris2/sketches/fYBGyNppX">
+        <img src="img/Στιγμιότυπο οθόνης 2025-06-19 125856.png" alt="Screenshot 3">
+      </a>
+      <h4>test test 3</h4>
     </div>
   </div>
+</div>
     
   <div class="container one-bottom">
     <h2>Team 48</h2>
